@@ -1,0 +1,43 @@
+[tool.poetry]
+name = "edinet-holding-report"
+version = "1.0.0"
+description = "EDINET大量保有報告書スクレイピング & LINE Bot"
+authors = ["Your Name <your.email@example.com>"]
+readme = "README.md"
+packages = [{include = "src"}]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4.0"
+flask = "^3.0.0"
+requests = "^2.32.0"
+beautifulsoup4 = "^4.13.0"
+lxml = "^5.3.0"
+line-bot-sdk = "^3.16.0"
+python-dotenv = "^1.1.0"
+pandas = "^2.2.0"
+numpy = "^2.2.0"
+fastapi = "^0.115.0"
+uvicorn = "^0.34.0"
+mysql-connector-python = "^9.2.0"
+pathlib = "^1.0.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.0"
+black = "^23.0"
+flake8 = "^6.0"
+
+[tool.poetry.scripts]
+edinet-scraper = "run_scraper:main"
+edinet-webhook = "run_webhook:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+target-version = ['py39']
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203", "W503"]
