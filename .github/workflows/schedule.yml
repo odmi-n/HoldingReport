@@ -1,0 +1,35 @@
+name: Scheduled scraper run
+
+on:
+  schedule:
+    # 19:30 JST / 10:30 UTC every day
+    - cron: '30 10 * * *'
+  workflow_dispatch:
+
+jobs:
+  run-scraper:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: 1.7.1
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+
+      - name: Install dependencies
+        run: poetry install --no-interaction --no-root
+
+      - name: Run scraper
+        env:
+          PYTHONUNBUFFERED: '1'
+        run: poetry run python run_scraper.py
