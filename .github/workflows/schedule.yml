@@ -6,17 +6,14 @@ on:
     - cron: '30 10 * * *'
   workflow_dispatch:
 
+env:
+  EDINET_CODE: ${{ vars.EDINET_CODE || 'E35239' }}
+  DOWNLOAD_DIR: ${{ vars.DOWNLOAD_DIR || 'data/downloads' }}
+  DB_PATH: ${{ vars.DB_PATH || 'data/database/edinet_reports.db' }}
+
 jobs:
   run-scraper:
     runs-on: ubuntu-latest
-    env:
-      EDINET_CODE: ${{ vars.EDINET_CODE || 'E35239' }}
-      EDINET_API_KEY: ${{ secrets.EDINET_API_KEY }}
-      DOWNLOAD_DIR: ${{ vars.DOWNLOAD_DIR || 'data/downloads' }}
-      LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
-      LINE_CHANNEL_SECRET: ${{ secrets.LINE_CHANNEL_SECRET }}
-      LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
-      DB_PATH: ${{ vars.DB_PATH || 'data/database/edinet_reports.db' }}
 
     steps:
       - name: Check out repository
@@ -40,4 +37,8 @@ jobs:
       - name: Run scraper
         env:
           PYTHONUNBUFFERED: '1'
+          EDINET_API_KEY: ${{ secrets.EDINET_API_KEY }}
+          LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
+          LINE_CHANNEL_SECRET: ${{ secrets.LINE_CHANNEL_SECRET }}
+          LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
         run: poetry run python run_scraper.py
